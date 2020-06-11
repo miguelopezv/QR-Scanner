@@ -14,8 +14,7 @@ class ScanModel {
   }
 
   int id;
-  String type;
-  String value;
+  String type, value;
 
   factory ScanModel.fromJson(Map<String, dynamic> json) => ScanModel(
         id: json["id"],
