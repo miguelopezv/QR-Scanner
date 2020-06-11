@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_scanner/models/scan_model.dart';
 
 import '../bloc/scans_bloc.dart';
+import '../utils/utils.dart' as utils;
 
 class UrlsPage extends StatelessWidget {
   final _scansBloc = new ScansBloc();
@@ -28,6 +29,7 @@ class UrlsPage extends StatelessWidget {
                   onDismissed: (direction) =>
                       _scansBloc.deleteScan(snapshot.data[i].id),
                   child: ListTile(
+                    onTap: () => utils.openScan(snapshot.data[i]),
                     leading: Icon(
                       Icons.cloud_queue,
                       color: Theme.of(context).primaryColor,
