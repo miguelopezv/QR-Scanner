@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (futureString != null) {
-      final scan = ScanModel(value: futureString);
+      final scan = ScanModel(value: futureString.rawContent);
       _scansBloc.addScan(scan);
 
       // prevent lag for camera closing animation
