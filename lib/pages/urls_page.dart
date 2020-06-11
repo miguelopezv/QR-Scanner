@@ -29,7 +29,7 @@ class UrlsPage extends StatelessWidget {
                   onDismissed: (direction) =>
                       _scansBloc.deleteScan(snapshot.data[i].id),
                   child: ListTile(
-                    onTap: () => utils.openScan(snapshot.data[i]),
+                    onTap: () => utils.openScan(context, snapshot.data[i]),
                     leading: Icon(
                       Icons.cloud_queue,
                       color: Theme.of(context).primaryColor,
