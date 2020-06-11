@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import './validator.dart';
 import '../providers/db_provider.dart';
 
-class ScansBloc {
+class ScansBloc with Validators {
   static final ScansBloc _scansBloc = new ScansBloc._();
 
   factory ScansBloc() {
@@ -15,7 +16,10 @@ class ScansBloc {
 
   final _scansController = StreamController<List<ScanModel>>.broadcast();
 
-  Stream<List<ScanModel>> get scansStream => _scansController.stream;
+  Stream<List<ScanModel>> get scansStreamGeo =>
+      _scansController.stream.transform(validateGeo);
+  Stream<List<ScanModel>> get scansStreamHttp =>
+      _scansController.stream.transform(validateHttp);
 
   dispose() {
     _scansController?.close();
