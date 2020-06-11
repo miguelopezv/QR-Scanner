@@ -9,7 +9,9 @@ class ScanModel {
     this.id,
     this.type,
     this.value,
-  });
+  }) {
+    this.type = this.value.contains('http') ? 'http' : 'geo';
+  }
 
   int id;
   String type;
