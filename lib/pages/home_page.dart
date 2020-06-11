@@ -4,6 +4,9 @@ import 'package:barcode_scan/barcode_scan.dart';
 import './maps_page.dart';
 import './urls_page.dart';
 
+import '../models/scan_model.dart';
+import '../bloc/scans_bloc.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
 
@@ -14,6 +17,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
+  final _scansBloc = new ScansBloc();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +27,7 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete_forever),
-            onPressed: () {},
+            onPressed: () => _scansBloc.deleteAllScans,
           )
         ],
       ),
@@ -65,13 +70,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   _scanQR() async {
+    // http://reddit.com
     // geo:40.65967463655211,-74.22704115351566
-    dynamic futureString = '';
+    // dynamic futureString = '';
+    dynamic futureString = 'http://reddit.com';
 
-    try {
-      futureString = await BarcodeScanner.scan();
-    } catch (e) {
-      futureString = e.toString();
+    // try {
+    //   futureString = await BarcodeScanner.scan();
+    // } catch (e) {
+    //   futureString = e.toString();
+    // }
+
+    if (futureString != null) {
+      final scan = ScanModel(value: futureString);
+      _scansBloc.addScan(scan);
     }
 
     print('Future String: ${futureString.rawContent}');
