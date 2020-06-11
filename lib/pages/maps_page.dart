@@ -1,14 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:qr_scanner/models/scan_model.dart';
+
+import '../bloc/scans_bloc.dart';
+import '../utils/utils.dart' as utils;
 
 class MapsPage extends StatelessWidget {
-  const MapsPage({Key key}) : super(key: key);
+  final _scansBloc = new ScansBloc();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text('Maps'),
-      ),
+    _scansBloc.getScans();
+
+    return StreamBuilder(
+      stream: _scansBloc.scansStreamGeo,
+      builder: (BuildContext context, AsyncSnapshot<List<ScanModel>> snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.data.length == 0) {
+          return Center(
+            child: Text('No data'),
+          );
+        }
+
+        return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, i) {
+              return Dismissible(
+                key: UniqueKey(),
+                background: Container(color: Colors.red),
+                onDismissed: (direction) =>
+                    _scansBloc.deleteScan(snapshot.data[i].id),
+                child: ListTile(
+                  onTap: () => utils.openScan(context, snapshot.data[i]),
+                  leading: Icon(
+                    Icons.map,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  title: Text(snapshot.data[i].value),
+                  trailing:
+                      Icon(Icons.keyboard_arrow_right, color: Colors.grey),
+                ),
+              );
+            });
+      },
     );
   }
 }
